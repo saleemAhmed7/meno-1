@@ -1,0 +1,20 @@
+{
+  "name": {
+    "ar": "كفتة عرب كافيه مع الأرز",
+    "tr": "Arab Cafe Köfte ve Pilav",
+    "en": "Arab Cafe Kofta with Rice"
+  },
+  "description": {
+    "ar": "أصابع الكفتة المشوية على الفحم تقدم فوق الأرز المتبل مع صلصة الطماطم",
+    "tr": "Kömür ateşinde pişmiş köfteler, baharatlı pilav ve domates sosu eşliğinde",
+    "en": "Charcoal-grilled minced meat kofta served over spiced rice with tomato salsa"
+  },
+  "price": 110,
+  "available": true,
+  "order": 3,
+  "spicyLevel": 2,
+  "tags": [
+    "kofta",
+    "grill"
+  ]
+}

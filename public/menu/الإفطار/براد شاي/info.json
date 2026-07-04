@@ -1,0 +1,14 @@
+{
+  "name": {
+    "ar": "إبريق شاي أحمر",
+    "tr": "Demlik Çay",
+    "en": "Tea Pot"
+  },
+  "price": 30,
+  "available": true,
+  "order": 8,
+  "tags": [
+    "tea",
+    "hot-drink"
+  ]
+}

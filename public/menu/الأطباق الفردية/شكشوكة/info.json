@@ -1,0 +1,14 @@
+{
+  "name": {
+    "ar": "طبق شكشوكة منفرد",
+    "tr": "Porsiyon Şakşuka",
+    "en": "Individual Shakshuka"
+  },
+  "price": 40,
+  "available": false,
+  "order": 3,
+  "spicyLevel": 1,
+  "tags": [
+    "egg"
+  ]
+}

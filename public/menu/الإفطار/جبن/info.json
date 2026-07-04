@@ -1,0 +1,13 @@
+{
+  "name": {
+    "ar": "أجبان مشكلة",
+    "tr": "Karışık Peynir Tabağı",
+    "en": "Assorted Cheeses"
+  },
+  "price": 55,
+  "available": true,
+  "order": 6,
+  "tags": [
+    "cheese"
+  ]
+}

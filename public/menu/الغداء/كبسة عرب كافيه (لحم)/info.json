@@ -1,0 +1,23 @@
+{
+  "name": {
+    "ar": "كبسة عرب كافيه (لحم)",
+    "tr": "Arab Cafe Kabsa (Et)",
+    "en": "Arab Cafe Kabsa (Meat)"
+  },
+  "description": {
+    "ar": "أرز بسمتي مبهر مع لحم الضأن الطري المطهو ببطء والمكسرات المحمصة",
+    "tr": "Yavaş pişmiş kuzu eti, baharatlı basmati pirinci ve kavrulmuş kuruyemiş",
+    "en": "Spiced basmati rice topped with slow-cooked tender lamb and toasted nuts"
+  },
+  "price": 150,
+  "oldPrice": 180,
+  "available": true,
+  "featured": true,
+  "bestSeller": true,
+  "order": 1,
+  "tags": [
+    "rice",
+    "lamb",
+    "premium"
+  ]
+}

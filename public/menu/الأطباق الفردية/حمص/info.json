@@ -1,0 +1,13 @@
+{
+  "name": {
+    "ar": "طبق حمص منفرد",
+    "tr": "Porsiyon Humus",
+    "en": "Individual Hummus"
+  },
+  "price": 30,
+  "available": true,
+  "order": 2,
+  "tags": [
+    "cold-appetizer"
+  ]
+}

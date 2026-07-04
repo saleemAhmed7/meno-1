@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "مياه معدنية",
+    "tr": "Su",
+    "en": "Water"
+  },
+  "price": 15,
+  "available": true,
+  "order": 9
+}

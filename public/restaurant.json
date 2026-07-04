@@ -1,0 +1,59 @@
+{
+  "name": {
+    "ar": "عرب كافيه",
+    "tr": "Arab Cafe",
+    "en": "Arab Cafe"
+  },
+  "logo": "/logo.png",
+  "defaultCurrency": "TL",
+  "phone": "+905551234567",
+  "whatsapp": "+905551234567",
+  "tiktok": "d4northturkey2",
+  "tiktokLink": "https://www.tiktok.com/@d4northturkey2?_r=1&_t=ZS-97kgW3n1Qb2",
+  "snapchat": "d4northturkey2",
+  "snapchatLink": "https://snapchat.com/t/8Ck56hqo",
+  "address": {
+    "ar": "أوزنجول، طرابزون، تركيا",
+    "tr": "Uzungöl, Trabzon, Türkiye",
+    "en": "Uzungöl, Trabzon, Turkey"
+  },
+  "workingHours": {
+    "ar": "يومياً من الساعة ٨:٠٠ صباحاً وحتى ١٢:٠٠ منتصف الليل",
+    "tr": "Her gün 08:00 - 00:00 saatleri arası",
+    "en": "Daily from 8:00 AM to 12:00 AM"
+  },
+  "branches": [
+    {
+      "id": "uzungol",
+      "name": {
+        "ar": "فرع أوزنجول",
+        "tr": "Uzungöl Şubesi",
+        "en": "Uzungöl Branch"
+      },
+      "address": {
+        "ar": "أوزنجول، طرابزون، تركيا",
+        "tr": "Uzungöl, Trabzon, Türkiye",
+        "en": "Uzungöl, Trabzon, Turkey"
+      },
+      "phone": "+905551234567",
+      "whatsapp": "+905551234567",
+      "mapsLink": "https://maps.google.com"
+    },
+    {
+      "id": "trabzon-center",
+      "name": {
+        "ar": "فرع طرابزون المركز",
+        "tr": "Trabzon Merkez Şubesi",
+        "en": "Trabzon Center Branch"
+      },
+      "address": {
+        "ar": "مركز المدينة، طرابزون، تركيا",
+        "tr": "Merkez, Trabzon, Türkiye",
+        "en": "City Center, Trabzon, Turkey"
+      },
+      "phone": "+905559876543",
+      "whatsapp": "+905559876543",
+      "mapsLink": "https://maps.google.com"
+    }
+  ]
+}

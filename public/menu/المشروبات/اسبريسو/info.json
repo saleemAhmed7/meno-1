@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "إسبريسو",
+    "tr": "Espresso",
+    "en": "Espresso"
+  },
+  "price": 35,
+  "available": true,
+  "order": 4
+}

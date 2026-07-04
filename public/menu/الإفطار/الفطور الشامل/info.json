@@ -1,0 +1,27 @@
+{
+  "name": {
+    "ar": "فطور كامل",
+    "tr": "Tam Kahvaltı",
+    "en": "Full Breakfast"
+  },
+  "description": {
+    "ar": "طبق فطور كامل غني بالبيض، الأجبان، الزيتون، والعسل",
+    "tr": "Zengin yumurta, peynir, zeytin ve bal ile tam kahvaltı tabağı",
+    "en": "A complete breakfast platter rich in eggs, cheeses, olives, and honey"
+  },
+  "price": 120,
+  "available": true,
+  "featured": true,
+  "bestSeller": true,
+  "order": 1,
+  "spicyLevel": 0,
+  "tags": [
+    "breakfast",
+    "egg",
+    "premium"
+  ],
+  "multiImages": [
+    "C:\\Users\\hamza\\.gemini\\antigravity-ide\\brain\\e9b4ce8d-fd40-42f9-9005-02026356f93c\\dish_template_1783161998352.png",
+    "C:\\Users\\hamza\\.gemini\\antigravity-ide\\brain\\e9b4ce8d-fd40-42f9-9005-02026356f93c\\lunch_template_1783162009791.png"
+  ]
+}

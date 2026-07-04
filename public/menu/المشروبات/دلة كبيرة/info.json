@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "دلة قهوة عربية كبيرة",
+    "tr": "Büyük Boy Arap Kahvesi",
+    "en": "Large Arabic Coffee Pot"
+  },
+  "price": 80,
+  "available": true,
+  "order": 3
+}

@@ -1,0 +1,13 @@
+{
+  "name": {
+    "ar": "طبق فول منفرد",
+    "tr": "Porsiyon Foul",
+    "en": "Individual Foul"
+  },
+  "price": 35,
+  "available": true,
+  "order": 1,
+  "tags": [
+    "beans"
+  ]
+}

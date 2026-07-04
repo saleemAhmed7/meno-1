@@ -1,0 +1,14 @@
+{
+  "name": {
+    "ar": "فطيرة نوتيلا",
+    "tr": "Nutella Krep",
+    "en": "Nutella Pancake"
+  },
+  "price": 60,
+  "available": true,
+  "order": 5,
+  "tags": [
+    "sweet",
+    "chocolate"
+  ]
+}

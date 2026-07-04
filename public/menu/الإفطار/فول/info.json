@@ -1,0 +1,19 @@
+{
+  "name": {
+    "ar": "فول مدمس",
+    "tr": "Foul Medames",
+    "en": "Foul Medames"
+  },
+  "description": {
+    "ar": "فول مدمس بالزيت الحار والليمون والكمون",
+    "tr": "Baharatlar ve zeytinyağı ile sıcak servis edilen geleneksel bakla",
+    "en": "Traditional fava beans served hot with spices and olive oil"
+  },
+  "price": 45,
+  "available": true,
+  "order": 2,
+  "tags": [
+    "beans",
+    "traditional"
+  ]
+}

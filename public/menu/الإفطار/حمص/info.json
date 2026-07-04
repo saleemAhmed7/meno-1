@@ -1,0 +1,19 @@
+{
+  "name": {
+    "ar": "حمص بالطحينة",
+    "tr": "Humus",
+    "en": "Hummus"
+  },
+  "description": {
+    "ar": "حمص ناعم مع الطحينة وعصير الليمون وزيت الزيتون البكر",
+    "tr": "Tahin, limon suyu ve sızma zeytinyağı ile kremsi nohut mezesi",
+    "en": "Creamy chickpea puree with tahini, lemon juice, and virgin olive oil"
+  },
+  "price": 40,
+  "available": true,
+  "order": 3,
+  "tags": [
+    "vegan",
+    "cold-appetizer"
+  ]
+}

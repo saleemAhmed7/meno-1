@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "شاي عرب كافيه المميز",
+    "tr": "Arab Cafe Özel Çayı",
+    "en": "Arab Cafe Special Tea"
+  },
+  "price": 25,
+  "available": true,
+  "order": 7
+}

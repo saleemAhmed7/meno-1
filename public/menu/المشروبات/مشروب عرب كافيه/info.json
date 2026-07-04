@@ -1,0 +1,20 @@
+{
+  "name": {
+    "ar": "مشروب عرب كافيه الخاص",
+    "tr": "Arab Cafe Özel Kokteyli",
+    "en": "Arab Cafe Special Drink"
+  },
+  "description": {
+    "ar": "مزيج سري ومنعش من الفواكه الاستوائية والأعشاب الطازجة",
+    "tr": "Tropikal meyveler ve taze otların gizli, serinletici karışımı",
+    "en": "A secret, refreshing blend of tropical fruits and fresh herbs"
+  },
+  "price": null,
+  "available": true,
+  "featured": true,
+  "order": 12,
+  "tags": [
+    "special",
+    "signature"
+  ]
+}

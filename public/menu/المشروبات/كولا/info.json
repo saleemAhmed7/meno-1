@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "كوكا كولا",
+    "tr": "Kola",
+    "en": "Cola"
+  },
+  "price": 25,
+  "available": true,
+  "order": 10
+}

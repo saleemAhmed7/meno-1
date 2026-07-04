@@ -1,0 +1,13 @@
+{
+  "name": {
+    "ar": "عسل طبيعي وقشطة",
+    "tr": "Doğal Bal ve Kaymak",
+    "en": "Natural Honey & Kaymak"
+  },
+  "price": 70,
+  "available": true,
+  "order": 7,
+  "tags": [
+    "sweet"
+  ]
+}

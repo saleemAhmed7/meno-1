@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "قهوة تركية",
+    "tr": "Türk Kahvesi",
+    "en": "Turkish Coffee"
+  },
+  "price": 40,
+  "available": true,
+  "order": 6
+}

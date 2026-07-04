@@ -1,0 +1,20 @@
+{
+  "name": {
+    "ar": "شكشوكة",
+    "tr": "Şakşuka",
+    "en": "Shakshuka"
+  },
+  "description": {
+    "ar": "بيض مطبوخ ببطء في صلصة الطماطم الغنية والفلفل والتوابل",
+    "tr": "Baharatlı domates ve biber sosunda yavaşça pişirilmiş yumurta",
+    "en": "Eggs poached in a spiced tomato, pepper, and onion sauce"
+  },
+  "price": 50,
+  "available": true,
+  "order": 4,
+  "spicyLevel": 1,
+  "tags": [
+    "egg",
+    "spicy"
+  ]
+}

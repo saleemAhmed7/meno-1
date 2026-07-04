@@ -1,0 +1,15 @@
+{
+  "name": {
+    "ar": "دلة قهوة عربية مع التمر والدقيق",
+    "tr": "Hurma ve Un Helvalı Arap Kahvesi",
+    "en": "Arabic Coffee Pot with Dates & Flour"
+  },
+  "price": 85,
+  "available": true,
+  "order": 9,
+  "featured": true,
+  "tags": [
+    "coffee",
+    "traditional"
+  ]
+}

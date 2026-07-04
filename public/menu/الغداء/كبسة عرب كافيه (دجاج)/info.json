@@ -1,0 +1,19 @@
+{
+  "name": {
+    "ar": "كبسة عرب كافيه (دجاج)",
+    "tr": "Arab Cafe Kabsa (Tavuk)",
+    "en": "Arab Cafe Kabsa (Chicken)"
+  },
+  "description": {
+    "ar": "أرز الكبسة الشهير يقدم مع نصف دجاجة مشوية متبلة بالبهارات الخاصة",
+    "tr": "Özel baharatlarla marine edilmiş yarım kızarmış tavuk eşliğinde meşhur kabsa",
+    "en": "Spiced basmati rice served with roasted half chicken marinated in chef's spices"
+  },
+  "price": 95,
+  "available": true,
+  "order": 2,
+  "tags": [
+    "rice",
+    "chicken"
+  ]
+}

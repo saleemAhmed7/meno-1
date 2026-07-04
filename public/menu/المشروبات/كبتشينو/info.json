@@ -1,0 +1,10 @@
+{
+  "name": {
+    "ar": "كابتشينو",
+    "tr": "Kapuçino",
+    "en": "Cappuccino"
+  },
+  "price": 45,
+  "available": true,
+  "order": 5
+}
