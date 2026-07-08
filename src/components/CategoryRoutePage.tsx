@@ -13,6 +13,13 @@ import SchemaOrg from '@/components/SchemaOrg';
 import { Language } from '@/components/LanguageSwitcher';
 import { Category, Product, Restaurant, Branch } from '@/types/menu';
 
+const categorySlugs = [
+  { slug: 'breakfast', route: '/breakfast', labels: { ar: 'الإفطار', tr: 'Kahvaltı', en: 'Breakfast' } },
+  { slug: 'lunch', route: '/lunch', labels: { ar: 'الغداء', tr: 'Öğle Yemeği', en: 'Lunch' } },
+  { slug: 'drinks', route: '/drinks', labels: { ar: 'المشروبات', tr: 'İçecekler', en: 'Drinks' } },
+  { slug: 'individual-dishes', route: '/individual-dishes', labels: { ar: 'الأطباق الفردية', tr: 'Tek Kişilik Yemekler', en: 'Individual Dishes' } }
+];
+
 interface CategoryRoutePageProps {
   slug: string;
   fallbackTitle?: { ar: string; tr: string; en: string };
@@ -92,6 +99,9 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
   const isRtl = currentLang === 'ar';
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://arab-cafe-uzungol.com';
 
+  // Helper to get localized category label
+  const getCatLabel = (s: { labels: { ar: string; tr: string; en: string } }) => s.labels[currentLang] || s.labels.en;
+
   const uiTexts = {
     ar: {
       title: fallbackTitle?.ar || category?.name.ar || 'القسم',
@@ -140,6 +150,28 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
+
+      {/* Category tabs - sticky on mobile, text-only pills */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="sticky top-20 z-40 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="overflow-x-auto py-3">
+            <div className="flex gap-3 min-w-max">
+              {categorySlugs.map((s) => {
+                const active = slug === s.slug;
+                return (
+                  <button
+                    key={s.slug}
+                    onClick={() => router.push(s.route)}
+                    className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-md' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
+                  >
+                    {getCatLabel(s)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <main className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-16 pt-24 sm:px-6 lg:px-8 lg:pt-28">
         <section className="overflow-hidden rounded-[36px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_24px_70px_rgba(79,52,33,0.12)]">

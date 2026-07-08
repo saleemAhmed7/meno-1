@@ -34,6 +34,10 @@ const translations = {
     categoriesSub: 'اختر القسم الذي تفضله وابدأ رحلتك بين الأطباق',
     featuredTitle: 'أطباقنا المختارة',
     featuredSub: 'أفضل الاختيارات مقدمة لك بأناقة',
+    categoryBreakfast: 'الإفطار',
+    categoryLunch: 'الغداء',
+    categoryDrinks: 'المشروبات',
+    categoryIndividual: 'الأطباق الفردية',
     viewCategory: 'عرض القسم',
     noFeatured: 'لا توجد أطباق مميزة حالياً.'
   },
@@ -50,6 +54,10 @@ const translations = {
     categoriesSub: 'Tercih ettiğiniz bölümü seçin ve menü yolculuğuna başlayın',
     featuredTitle: 'Seçkin Lezzetler',
     featuredSub: 'Özenle seçilmiş özel ürünler',
+    categoryBreakfast: 'Kahvaltı',
+    categoryLunch: 'Öğle Yemeği',
+    categoryDrinks: 'İçecekler',
+    categoryIndividual: 'Tek Kişilik Yemekler',
     viewCategory: 'Kategoriyi Gör',
     noFeatured: 'Şu anda öne çıkan ürün yok.'
   },
@@ -66,6 +74,10 @@ const translations = {
     categoriesSub: 'Choose a section and dive into our curated selection',
     featuredTitle: 'Featured Picks',
     featuredSub: 'Hand-selected premium dishes curated for you',
+    categoryBreakfast: 'Breakfast',
+    categoryLunch: 'Lunch',
+    categoryDrinks: 'Drinks',
+    categoryIndividual: 'Individual Dishes',
     viewCategory: 'View category',
     noFeatured: 'No featured dishes available right now.'
   }
@@ -284,18 +296,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* subcategory chips for active category */}
-            <div className="mt-3 flex gap-2 overflow-x-auto py-2">
-              {(() => {
-                const activeCat = findCategoryBySlug(activeCategorySlug) || categories[0];
-                if (!activeCat) return null;
-                return activeCat.products.slice(0, 12).map((p) => (
-                  <Link key={p.id} href={`${getRouteForCategory(activeCat)}#menu-${activeCat.id}-${p.id}`} className="flex-shrink-0 rounded-full border border-[#c79c4f]/15 bg-[#fff9ee] px-3 py-1.5 text-xs font-medium text-[#8b632c]">
-                    {p.name[currentLang] || p.name.en || p.id}
-                  </Link>
-                ));
-              })()}
-            </div>
+            {/* subcategory chips removed per request (redundant) */}
           </div>
 
           {/* large category banner for active category */}
