@@ -45,16 +45,16 @@ export default function Navbar({
   const isRtl = currentLang === 'ar';
 
   const labels = {
-    ar: { searchPlaceholder: "ابحث عن طبق...", branch: "الفرع", contact: "اتصل بنا" },
-    tr: { searchPlaceholder: "Yemek ara...", branch: "Şube", contact: "İletişim" },
-    en: { searchPlaceholder: "Search for a dish...", branch: "Branch", contact: "Contact" }
+    ar: { searchPlaceholder: 'ابحث عن طبق...', branch: 'الفرع', contact: 'اتصل بنا' },
+    tr: { searchPlaceholder: 'Yemek ara...', branch: 'Şube', contact: 'İletişim' },
+    en: { searchPlaceholder: 'Search for a dish...', branch: 'Branch', contact: 'Contact' }
   };
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80; // height of sticky navbar
+      const offset = 96;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -70,61 +70,51 @@ export default function Navbar({
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-[#0d0d0c]/85 backdrop-blur-md border-b border-[#d4af37]/15 py-3 shadow-lg' 
-            : 'bg-transparent py-5'
+        className={`fixed left-1/2 top-3 z-40 w-[calc(100%-1rem)] max-w-7xl -translate-x-1/2 rounded-full border border-[#c79c4f]/15 px-3 py-2 transition-all duration-300 sm:px-4 ${
+          isScrolled
+            ? 'bg-[#fcf8f1]/90 shadow-[0_18px_45px_rgba(79,52,33,0.12)] backdrop-blur-xl'
+            : 'bg-[#fcf8f1]/75 shadow-[0_10px_32px_rgba(79,52,33,0.08)] backdrop-blur-xl'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-          
-          {/* Mobile Menu Trigger (RTL Left, LTR Right) */}
+        <div className="flex items-center justify-between gap-3">
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden p-2 rounded-lg text-[#f4f2ee] hover:bg-[#161614] transition-colors"
+            className="rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] p-2 text-[#4f3421] shadow-sm md:hidden"
             aria-label="Open menu"
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </button>
 
-          {/* Restaurant Branding */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center border border-[#d4af37]/30 overflow-hidden bg-[#161614]">
-              <Image 
-                src="/logo.png" 
-                alt={restaurant.name[currentLang]} 
-                width={40} 
-                height={40} 
-                className="object-cover w-full h-full animate-pulse-subtle"
-              />
+          <div className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#c79c4f]/25 bg-[#fff9ee] shadow-sm">
+              <Image src="/logo.png" alt={restaurant.name[currentLang]} width={40} height={40} className="h-full w-full object-cover" />
             </div>
             <div className="hidden sm:block">
-              <span className="font-serif font-semibold tracking-wide text-sm block leading-none text-[#f4f2ee]">
+              <span className="block text-sm font-semibold tracking-[0.16em] text-[#2f2219]">
                 {restaurant.name[currentLang]}
               </span>
-              <span className="text-[10px] text-[#c5a880]/80 tracking-widest uppercase block mt-1">
+              <span className="mt-1 block text-[10px] uppercase tracking-[0.25em] text-[#8b632c]">
                 Uzungöl, Trabzon
               </span>
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden items-center gap-2 md:flex">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`text-sm font-light hover:text-[#d4af37] transition-colors ${
-                activeSection === 'home' ? 'text-[#d4af37] font-medium' : 'text-[#f4f2ee]/85'
+              className={`rounded-full px-3 py-2 text-sm font-medium ${
+                activeSection === 'home' ? 'bg-[#2f2219] text-[#fcf8f1]' : 'text-[#4f3421] hover:bg-[#f7efe2] hover:text-[#2f2219]'
               }`}
             >
               {currentLang === 'ar' ? 'الرئيسية' : currentLang === 'tr' ? 'Ana Sayfa' : 'Home'}
             </button>
-            
+
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => scrollToSection(cat.id)}
-                className={`text-sm font-light hover:text-[#d4af37] transition-colors ${
-                  activeSection === cat.id ? 'text-[#d4af37] font-semibold' : 'text-[#f4f2ee]/85'
+                className={`rounded-full px-3 py-2 text-sm font-medium ${
+                  activeSection === cat.id ? 'bg-[#2f2219] text-[#fcf8f1]' : 'text-[#4f3421] hover:bg-[#f7efe2] hover:text-[#2f2219]'
                 }`}
               >
                 {cat.name[currentLang]}
@@ -132,9 +122,7 @@ export default function Navbar({
             ))}
           </div>
 
-          {/* Action Utilities (Search, Branch, Lang, Phone) */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Search toggler */}
             <div className="relative flex items-center">
               <AnimatePresence>
                 {isSearchOpen && (
@@ -146,35 +134,34 @@ export default function Navbar({
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder={labels[currentLang].searchPlaceholder}
-                    className="hidden sm:block outline-none text-xs rounded-full border border-[#d4af37]/25 bg-[#161614]/90 px-4 py-1.5 text-[#f4f2ee] focus:border-[#d4af37]/60 focus:ring-1 focus:ring-[#d4af37]/30 transition-all font-sans"
+                    className="hidden rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] px-4 py-2 text-xs text-[#2f2219] outline-none sm:block"
                     style={{ direction: isRtl ? 'rtl' : 'ltr' }}
                   />
                 )}
               </AnimatePresence>
-              
+
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-2 rounded-full hover:bg-[#161614] text-[#c5a880] transition-colors"
+                className="rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] p-2 text-[#8b632c] shadow-sm"
                 aria-label="Toggle search"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Branch Selector (Desktop & Tablet) */}
             {restaurant.branches && restaurant.branches.length > 1 && (
-              <div className="hidden lg:flex items-center gap-1 text-[#f4f2ee]/95 bg-[#161614]/40 border border-[#d4af37]/15 rounded-full px-3 py-1 text-xs">
-                <MapPin className="h-3.5 w-3.5 text-[#d4af37]" />
+              <div className="hidden items-center gap-1 rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] px-3 py-2 text-xs text-[#4f3421] lg:flex">
+                <MapPin className="h-3.5 w-3.5 text-[#c79c4f]" />
                 <select
                   value={selectedBranch?.id || ''}
                   onChange={(e) => {
-                    const branch = restaurant.branches.find(b => b.id === e.target.value);
+                    const branch = restaurant.branches.find((b) => b.id === e.target.value);
                     if (branch) onBranchChange(branch);
                   }}
-                  className="bg-transparent border-none outline-none cursor-pointer pr-4 font-sans text-xs text-[#f4f2ee] hover:text-[#d4af37] transition-colors"
+                  className="cursor-pointer bg-transparent pr-4 text-xs outline-none"
                 >
-                  {restaurant.branches.map(b => (
-                    <option key={b.id} value={b.id} className="bg-[#0d0d0c] text-[#f4f2ee]">
+                  {restaurant.branches.map((b) => (
+                    <option key={b.id} value={b.id} className="bg-[#fcf8f1] text-[#2f2219]">
                       {b.name[currentLang]}
                     </option>
                   ))}
@@ -182,102 +169,87 @@ export default function Navbar({
               </div>
             )}
 
-            {/* Direct Dial Phone Link */}
             <a
               href={`tel:${selectedBranch?.phone || restaurant.phone}`}
-              className="hidden sm:flex h-9 w-9 items-center justify-center rounded-full border border-[#d4af37]/15 bg-[#161614]/20 hover:bg-[#d4af37]/15 text-[#c5a880] transition-colors"
+              className="hidden rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] p-2 text-[#8b632c] shadow-sm sm:flex"
               title={labels[currentLang].contact}
             >
               <Phone className="h-4 w-4" />
             </a>
 
-            {/* Language dropdown */}
             <LanguageSwitcher currentLang={currentLang} onLanguageChange={onLanguageChange} />
           </div>
         </div>
       </nav>
 
-      {/* Slide-out Mobile Menu Navigation (Framer Motion Drawer) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop Blur */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
+              animate={{ opacity: 0.55 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-[#2f2219]/70 backdrop-blur-sm"
             />
 
-            {/* Drawer container */}
             <motion.div
               initial={{ x: isRtl ? '100%' : '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: isRtl ? '100%' : '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className={`fixed top-0 bottom-0 z-50 w-72 bg-[#121211] border-[#d4af37]/10 shadow-2xl p-6 flex flex-col justify-between ${
+              transition={{ type: 'spring', damping: 24, stiffness: 220 }}
+              className={`fixed top-0 bottom-0 z-50 flex w-72 flex-col justify-between border-[#c79c4f]/15 bg-[#fcf8f1] p-6 shadow-2xl ${
                 isRtl ? 'right-0 border-l' : 'left-0 border-r'
               }`}
               style={{ direction: isRtl ? 'rtl' : 'ltr' }}
             >
               <div>
-                <div className="flex items-center justify-between border-b border-[#d4af37]/10 pb-4">
+                <div className="flex items-center justify-between border-b border-[#c79c4f]/15 pb-4">
                   <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 shrink-0 rounded-full flex items-center justify-center border border-[#d4af37]/35 overflow-hidden bg-[#161614]">
-                      <Image 
-                        src="/logo.png" 
-                        alt={restaurant.name[currentLang]} 
-                        width={32} 
-                        height={32} 
-                        className="object-cover w-full h-full"
-                      />
+                    <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-[#c79c4f]/25 bg-[#fff9ee]">
+                      <Image src="/logo.png" alt={restaurant.name[currentLang]} width={32} height={32} className="h-full w-full object-cover" />
                     </div>
-                    <span className="font-serif font-semibold text-[#f4f2ee]">
-                      {restaurant.name[currentLang]}
-                    </span>
+                    <span className="font-serif text-base font-semibold text-[#2f2219]">{restaurant.name[currentLang]}</span>
                   </div>
-                  
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded-lg text-[#a69f95] hover:bg-[#161614] hover:text-[#f4f2ee]"
-                  >
+
+                  <button onClick={() => setMobileMenuOpen(false)} className="rounded-lg p-1 text-[#7a5941] hover:bg-[#f7efe2] hover:text-[#2f2219]">
                     <X className="h-6 w-6" />
                   </button>
                 </div>
 
-                {/* Mobile Search input */}
                 <div className="relative mt-6">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#a69f95]" />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8b632c]" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder={labels[currentLang].searchPlaceholder}
-                    className="w-full text-xs rounded-xl border border-[#d4af37]/15 bg-[#161614]/80 pl-9 pr-4 py-2.5 text-[#f4f2ee] focus:border-[#d4af37]/50 focus:outline-none font-sans"
+                    className="w-full rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] py-2.5 pl-10 pr-4 text-sm text-[#2f2219] outline-none"
+                    style={{ direction: isRtl ? 'rtl' : 'ltr' }}
                   />
                 </div>
 
-                {/* Menu list */}
-                <div className="mt-8 flex flex-col gap-5">
+                <div className="mt-8 space-y-2">
                   <button
                     onClick={() => {
-                      setMobileMenuOpen(false);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
+                      setMobileMenuOpen(false);
                     }}
-                    className={`text-right text-base font-light hover:text-[#d4af37] transition-colors pb-2 border-b border-white/[0.03] ${
-                      activeSection === 'home' ? 'text-[#d4af37] font-semibold' : 'text-[#f4f2ee]/85'
+                    className={`w-full rounded-xl px-4 py-3 text-right text-sm ${
+                      activeSection === 'home' ? 'bg-[#2f2219] text-[#fcf8f1]' : 'text-[#4f3421] hover:bg-[#f7efe2] hover:text-[#2f2219]'
                     }`}
                   >
                     {currentLang === 'ar' ? 'الرئيسية' : currentLang === 'tr' ? 'Ana Sayfa' : 'Home'}
                   </button>
-                  
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
-                      onClick={() => scrollToSection(cat.id)}
-                      className={`text-right text-base font-light hover:text-[#d4af37] transition-colors pb-2 border-b border-white/[0.03] ${
-                        activeSection === cat.id ? 'text-[#d4af37] font-semibold' : 'text-[#f4f2ee]/85'
+                      onClick={() => {
+                        scrollToSection(cat.id);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`w-full rounded-xl px-4 py-3 text-right text-sm ${
+                        activeSection === cat.id ? 'bg-[#2f2219] text-[#fcf8f1]' : 'text-[#4f3421] hover:bg-[#f7efe2] hover:text-[#2f2219]'
                       }`}
                     >
                       {cat.name[currentLang]}
@@ -286,40 +258,11 @@ export default function Navbar({
                 </div>
               </div>
 
-              {/* Branch Selector (Mobile Only) */}
-              <div>
-                {restaurant.branches && restaurant.branches.length > 1 && (
-                  <div className="flex flex-col gap-2 border-t border-[#d4af37]/10 pt-4 mt-6">
-                    <label className="text-[10px] text-[#c5a880] tracking-widest uppercase font-light">
-                      {labels[currentLang].branch}
-                    </label>
-                    <div className="flex items-center gap-2 text-[#f4f2ee]/95 bg-[#161614] border border-[#d4af37]/15 rounded-xl px-3 py-2 text-xs">
-                      <MapPin className="h-4 w-4 text-[#d4af37]" />
-                      <select
-                        value={selectedBranch?.id || ''}
-                        onChange={(e) => {
-                          const branch = restaurant.branches.find(b => b.id === e.target.value);
-                          if (branch) onBranchChange(branch);
-                        }}
-                        className="bg-transparent border-none outline-none cursor-pointer w-full text-xs text-[#f4f2ee] font-sans"
-                      >
-                        {restaurant.branches.map(b => (
-                          <option key={b.id} value={b.id} className="bg-[#121211] text-[#f4f2ee]">
-                            {b.name[currentLang]}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                )}
-                
-                <a
-                  href={`tel:${selectedBranch?.phone || restaurant.phone}`}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#d4af37]/10 border border-[#d4af37]/25 py-2.5 text-xs text-[#c5a880] hover:bg-[#d4af37]/20 active:scale-95 transition-all font-sans font-medium"
-                >
-                  <Phone className="h-3.5 w-3.5" />
-                  {selectedBranch?.phone || restaurant.phone}
-                </a>
+              <div className="rounded-2xl border border-[#c79c4f]/15 bg-[#fff9ee] p-4 text-sm text-[#7a5941]">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-[#c79c4f]" />
+                  <span>{restaurant.address[currentLang]}</span>
+                </div>
               </div>
             </motion.div>
           </>

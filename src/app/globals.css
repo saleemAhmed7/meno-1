@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold: #d4af37;
-  --color-gold-muted: #c5a880;
-  --color-gold-dark: #b38f2d;
-  --color-gold-light: #f3e5ab;
+  --color-gold: #c79c4f;
+  --color-gold-muted: #d8b77a;
+  --color-gold-dark: #8b632c;
+  --color-gold-light: #f5e7c4;
   --font-sans: var(--font-sans), sans-serif;
   --font-serif: var(--font-serif), serif;
 }
 
-/* Font variables binding */
 :root {
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
+  color-scheme: light;
+  background-color: #fcf8f1;
+  color: #2f2219;
 }
 
 [dir="rtl"] {
@@ -20,36 +22,51 @@
   --font-serif: var(--font-arabic-serif);
 }
 
-/* Custom Scrollbar */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fcf8f1 0%, #f7efe2 100%);
+  color: #2f2219;
+  font-family: var(--font-sans), sans-serif;
+}
+
+::selection {
+  background: rgba(199, 156, 79, 0.28);
+  color: #2f2219;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0d0c;
+  background: #f7efe2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(199, 156, 79, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: #c79c4f;
 }
 
-/* Glassmorphism panel */
 .glass {
-  background: rgba(22, 22, 20, 0.75);
+  background: rgba(252, 248, 241, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(199, 156, 79, 0.16);
+  box-shadow: 0 18px 40px rgba(79, 52, 33, 0.08);
 }
 
-/* Custom styling extensions */
 .shadow-text {
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 8px 20px rgba(47, 34, 25, 0.18);
 }
 
 .scrollbar-none::-webkit-scrollbar {
@@ -60,7 +77,6 @@
   scrollbar-width: none;
 }
 
-/* Utility Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -76,7 +92,6 @@
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Smooth transitions */
 button, select, input, a {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }

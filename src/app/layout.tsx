@@ -85,7 +85,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" className={`${outfit.variable} ${playfair.variable} ${cairo.variable} ${amiri.variable}`}>
-      <body className="antialiased min-h-screen bg-[#0d0d0c] text-[#f4f2ee]">
+      <body className="min-h-screen bg-[#f7efe2] text-[#2f2219] antialiased">
         {children}
       </body>
     </html>
