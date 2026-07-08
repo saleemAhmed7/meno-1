@@ -3,9 +3,12 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Category, Product, Restaurant } from '@/types/menu';
 import Navbar from '@/components/Navbar';
+import ProductCard from '@/components/ProductCard';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import InstallPWA from '@/components/InstallPWA';
 import SchemaOrg from '@/components/SchemaOrg';
 import { Language } from '@/components/LanguageSwitcher';
@@ -113,6 +116,10 @@ export default function Home() {
   };
 
   const texts = translations[currentLang];
+
+  const router = useRouter();
+  const [activeCategorySlug, setActiveCategorySlug] = useState<string>(categorySlugs[0].slug);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const sliderItems = useMemo(() => {
     const items: Array<{ image: string; label: string }> = [];
@@ -250,48 +257,79 @@ export default function Home() {
       </section>
 
       <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-        <section className="grid gap-4 sm:grid-cols-3">
-          {categorySlugs.slice(0, 3).map((s) => {
-            const cat = findCategoryBySlug(s.slug);
-            const image = cat?.coverImage || '/placeholder-food.jpg';
-            const label = (texts as any)[s.labelKey] || s.slug;
-            return (
-              <Link key={s.slug} href={s.route} className="group overflow-hidden rounded-[28px] border border-[#c79c4f]/15 bg-[#fff9ee] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={image} alt={label} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="100vw" />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.24),rgba(47,34,25,0.6))]" />
-                </div>
-                <div className="p-4 text-center text-[#2f2219]">
-                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#2f2219]">{label}</p>
-                </div>
-              </Link>
-            );
-          })}
-        </section>
+        {/* top category image cards removed; replaced by text-only tabs below */}
 
-        {/* welcome card removed per redesign requirements */}
-
-        <section className="mt-10">
-          <div className="mb-6 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8b632c]">{texts.categoriesTitle}</p>
-            <h2 className="mt-3 font-serif text-3xl font-light text-[#2f2219] sm:text-4xl">{texts.categoriesSub}</h2>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-2">
-            {filteredCategories.map((category) => (
-              <Link key={category.id} href={getRouteForCategory(category)} className="group overflow-hidden rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
-                <div className="relative h-64 w-full overflow-hidden">
-                  <Image src={category.coverImage || '/placeholder-food.jpg'} alt={category.name[currentLang] || category.name.en || ''} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="100vw" />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.2),rgba(47,34,25,0.72))]" />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 text-center">
-                    <div>
-                      <h3 className="font-serif text-3xl font-semibold uppercase tracking-[0.08em] text-white sm:text-4xl">{category.name[currentLang] || category.name.en}</h3>
-                      <p className="mt-3 text-sm uppercase tracking-[0.24em] text-[#e6d8be]">{texts.viewCategory}</p>
-                    </div>
+        {/* Horizontal category navigation + chips + banner + products for active category */}
+        <section className="mt-8">
+          <div className="mb-4">
+            <div className="-mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="sticky top-20 z-40 -mx-4 px-4 sm:mx-0 sm:px-0">
+                <div className="overflow-x-auto py-2">
+                  <div className="flex gap-3 min-w-max">
+                    {categorySlugs.map((s) => {
+                      const active = activeCategorySlug === s.slug || (typeof window !== 'undefined' && window.location.pathname === s.route);
+                      const label = (texts as any)[s.labelKey] || s.slug;
+                      return (
+                        <button
+                          key={s.slug}
+                          onClick={() => { setActiveCategorySlug(s.slug); router.push(s.route); }}
+                          className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-md' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-              </Link>
-            ))}
+              </div>
+            </div>
+
+            {/* subcategory chips for active category */}
+            <div className="mt-3 flex gap-2 overflow-x-auto py-2">
+              {(() => {
+                const activeCat = findCategoryBySlug(activeCategorySlug) || categories[0];
+                if (!activeCat) return null;
+                return activeCat.products.slice(0, 12).map((p) => (
+                  <Link key={p.id} href={`${getRouteForCategory(activeCat)}#menu-${activeCat.id}-${p.id}`} className="flex-shrink-0 rounded-full border border-[#c79c4f]/15 bg-[#fff9ee] px-3 py-1.5 text-xs font-medium text-[#8b632c]">
+                    {p.name[currentLang] || p.name.en || p.id}
+                  </Link>
+                ));
+              })()}
+            </div>
+          </div>
+
+          {/* large category banner for active category */}
+          {(() => {
+            const activeCat = findCategoryBySlug(activeCategorySlug) || categories[0];
+            if (!activeCat) return null;
+            const bannerImage = activeCat.coverImage || activeCat.products[0]?.media[0]?.url || '/placeholder-food.jpg';
+            return (
+              <div className="overflow-hidden rounded-[36px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_24px_70px_rgba(79,52,33,0.12)]">
+                <div className="relative h-64 w-full sm:h-80 lg:h-96">
+                  <Image src={bannerImage} alt={activeCat.name[currentLang] || activeCat.name.en} fill sizes="(max-width: 1024px) 100vw, 1200px" className="object-cover" />
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(47,34,25,0.75),rgba(47,34,25,0.25))]" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10">
+                    <h2 className="mt-4 max-w-2xl font-serif text-3xl font-light text-[#fcf8f1] sm:text-4xl lg:text-5xl">{activeCat.name[currentLang] || activeCat.name.en}</h2>
+                    <p className="mt-3 max-w-xl text-sm leading-7 text-[#f4e2c5]">{texts.featuredSub}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* products for active category */}
+          <div className="mt-8">
+            {(() => {
+              const activeCat = findCategoryBySlug(activeCategorySlug) || categories[0];
+              if (!activeCat) return null;
+              return (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {activeCat.products.map((product) => (
+                    <ProductCard key={product.id} product={product} lang={currentLang} onSelect={setSelectedProduct} anchorId={`menu-${activeCat.id}-${product.id}`} />
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         </section>
 
@@ -337,6 +375,9 @@ export default function Home() {
       </main>
 
       <InstallPWA lang={currentLang} />
+      {selectedProduct && (
+        <ProductDetailModal product={selectedProduct} lang={currentLang} onClose={() => setSelectedProduct(null)} whatsappNumber={restaurant?.whatsapp || restaurant?.phone || ''} />
+      )}
     </div>
   );
 }
