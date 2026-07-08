@@ -37,13 +37,13 @@ export default function Navbar({ currentLang, onLanguageChange, restaurant, sear
 
   return (
     <nav id="app-navbar"
-      className={`fixed left-0 top-0 z-40 w-full backdrop-blur-md transition-all duration-300`}
+      className={`fixed left-0 top-0 z-60 w-full backdrop-blur-md transition-all duration-300`}
       style={{
         display: 'flex',
         justifyContent: 'center'
       }}
     >
-      <div className={`w-[calc(100%-1rem)] max-w-7xl -translate-x-0 rounded-full border px-3 py-2 transition-all duration-300 sm:px-4 ${isScrolled ? 'shadow-[0_18px_45px_rgba(79,52,33,0.12)]' : 'shadow-[0_10px_32px_rgba(79,52,33,0.08)]'}`} style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.3)' }}>
+      <div className={`w-[calc(100%-1rem)] max-w-7xl -translate-x-0 rounded-full border px-3 py-2 transition-all duration-300 sm:px-4 ${isScrolled ? 'shadow-[0_18px_45px_rgba(79,52,33,0.12)]' : 'shadow-[0_10px_32px_rgba(79,52,33,0.08)]'}`} style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.3)', zIndex: 60 }}>
     >
       <div className="flex items-center justify-between gap-3">
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 rounded-full px-2 py-1.5">

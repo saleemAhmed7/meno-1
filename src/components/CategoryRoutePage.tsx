@@ -196,7 +196,7 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
       {/* Category tabs: placed directly below banner. They become sticky under the header when scrolled. */}
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
         <div className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ top: `${headerHeight}px` }}>
-          <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3">
+          <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3" style={{ zIndex: 50 }}>
             <div className="overflow-x-auto scroll-smooth px-2">
               <div className="flex gap-3 min-w-max">
                 {categorySlugs.map((s) => {
