@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -103,13 +103,7 @@ export default function Home() {
     loadData();
   }, []);
 
-  useEffect(() => {
-    if (!categories.length) return;
-    const interval = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % Math.min(4, sliderItems.length));
-    }, 4500);
-    return () => window.clearInterval(interval);
-  }, [categories]);
+  // autoplay handled below after `sliderItems` is computed
 
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);
@@ -139,6 +133,39 @@ export default function Home() {
     }
     return items;
   }, [categories, currentLang, texts.heroTitle]);
+
+  // touch handlers & swipe support for slider
+  const touchStartX = useRef<number | null>(null);
+  const touchDelta = useRef<number>(0);
+
+  const nextSlide = () => setActiveSlide((s) => (s + 1) % Math.max(1, sliderItems.length));
+  const prevSlide = () => setActiveSlide((s) => (s - 1 + Math.max(1, sliderItems.length)) % Math.max(1, sliderItems.length));
+
+  useEffect(() => {
+    if (!sliderItems.length) return;
+    const id = window.setInterval(() => {
+      setActiveSlide((s) => (s + 1) % sliderItems.length);
+    }, 4000);
+    return () => window.clearInterval(id);
+  }, [sliderItems.length]);
+
+  const findCategoryBySlug = (slug: string) => {
+    const normalized = (s?: string) => (s || '').toLowerCase().replace(/\s+/g, '-');
+    return categories.find((cat) => {
+      const id = (cat.id || '').toLowerCase();
+      if (id === slug || normalized(id) === slug) return true;
+      const names = [cat.name.ar, cat.name.tr, cat.name.en];
+      return names.some((n) => normalized(n) === slug);
+    });
+  };
+
+  const getRouteForCategory = (cat: Category) => {
+    for (const s of categorySlugs) {
+      const found = findCategoryBySlug(s.slug);
+      if (found && found.id === cat.id) return s.route;
+    }
+    return `/${cat.id.toLowerCase().replace(/\s+/g, '-')}`;
+  };
 
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return categories;
@@ -187,73 +214,62 @@ export default function Home() {
 
       <Navbar currentLang={currentLang} onLanguageChange={handleLanguageChange} restaurant={restaurant} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
-      <header className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="rounded-[36px] border border-[#c79c4f]/15 bg-[#fcf8f1] p-6 shadow-[0_28px_80px_rgba(79,52,33,0.12)] sm:p-8">
-          <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:items-center">
-            <div className="space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[#8b632c]">{texts.heroTitle}</p>
-              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[#2f2219] sm:text-5xl">{texts.heroTitle}</h1>
-              <p className="max-w-2xl text-base leading-8 text-[#634b3a]">{texts.heroSubtitle}</p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link href="/breakfast" className="inline-flex items-center justify-center rounded-full bg-[#2f2219] px-6 py-3 text-sm font-semibold text-[#fff9ee] transition hover:bg-[#3d2b1f]">
-                  {texts.shortcutBreakfast}
-                </Link>
-                <Link href="/lunch" className="inline-flex items-center justify-center rounded-full border border-[#c79c4f] bg-white px-6 py-3 text-sm font-semibold text-[#2f2219] transition hover:border-[#a98349]">
-                  {texts.shortcutLunch}
-                </Link>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-[32px] border border-[#c79c4f]/10 bg-[#fff9ee] p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.8)]">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-[#e9d8b4]">
-                <Image src={sliderItems[activeSlide]?.image || '/placeholder-food.jpg'} alt={sliderItems[activeSlide]?.label} fill className="object-cover" sizes="100vw" />
+      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div
+          className="rounded-[32px] overflow-hidden border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_24px_70px_rgba(79,52,33,0.12)]"
+          onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchMove={(e) => { if (touchStartX.current != null) touchDelta.current = e.touches[0].clientX - touchStartX.current; }}
+          onTouchEnd={() => {
+            if (Math.abs(touchDelta.current) > 50) {
+              if (touchDelta.current < 0) nextSlide(); else prevSlide();
+            }
+            touchStartX.current = null;
+            touchDelta.current = 0;
+          }}
+        >
+          <div className="relative h-[420px] sm:h-[520px] w-full">
+            {sliderItems.map((item, index) => (
+              <div key={index} className={`absolute inset-0 transition-all duration-700 ${index === activeSlide ? 'opacity-100 scale-100' : 'pointer-events-none opacity-0 scale-95'}`}>
+                <Image src={item.image} alt={item.label} fill className="object-cover" sizes="100vw" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.05),rgba(47,34,25,0.45))]" />
               </div>
-              <div className="mt-4 flex items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#8b632c]">{texts.featuredTitle}</p>
-                  <p className="text-sm font-semibold text-[#2f2219]">{sliderItems[activeSlide]?.label}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  {sliderItems.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveSlide(index)}
-                      className={`h-2.5 rounded-full transition-all duration-300 ${index === activeSlide ? 'w-8 bg-[#2f2219]' : 'w-2.5 bg-[#c79c4f]/40'}`}
-                      aria-label={`Slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
+            ))}
+
+            <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+              {sliderItems.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveSlide(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${index === activeSlide ? 'w-8 bg-[#2f2219]' : 'w-2.5 bg-[#c79c4f]/40'}`}
+                />
+              ))}
             </div>
           </div>
         </div>
-      </header>
+      </section>
 
       <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <section className="grid gap-4 sm:grid-cols-3">
-          {[
-            { label: texts.shortcutBreakfast, href: '/breakfast', image: categories.find((cat) => cat.id.toLowerCase().includes('breakfast'))?.coverImage || '/placeholder-food.jpg' },
-            { label: texts.shortcutLunch, href: '/lunch', image: categories.find((cat) => cat.id.toLowerCase().includes('lunch'))?.coverImage || '/placeholder-food.jpg' },
-            { label: texts.shortcutDrinks, href: '/drinks', image: categories.find((cat) => cat.id.toLowerCase().includes('drinks'))?.coverImage || '/placeholder-food.jpg' }
-          ].map((item) => (
-            <Link key={item.href} href={item.href} className="group overflow-hidden rounded-[28px] border border-[#c79c4f]/15 bg-[#fff9ee] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image src={item.image} alt={item.label} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="100vw" />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.24),rgba(47,34,25,0.6))]" />
-              </div>
-              <div className="p-4 text-center text-[#2f2219]">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#2f2219]">{item.label}</p>
-              </div>
-            </Link>
-          ))}
+          {categorySlugs.slice(0, 3).map((s) => {
+            const cat = findCategoryBySlug(s.slug);
+            const image = cat?.coverImage || '/placeholder-food.jpg';
+            const label = (texts as any)[s.labelKey] || s.slug;
+            return (
+              <Link key={s.slug} href={s.route} className="group overflow-hidden rounded-[28px] border border-[#c79c4f]/15 bg-[#fff9ee] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image src={image} alt={label} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="100vw" />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.24),rgba(47,34,25,0.6))]" />
+                </div>
+                <div className="p-4 text-center text-[#2f2219]">
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#2f2219]">{label}</p>
+                </div>
+              </Link>
+            );
+          })}
         </section>
 
-        <section className="mt-10 rounded-[34px] border border-[#c79c4f]/15 bg-[linear-gradient(135deg,#fcf8f1_0%,#f4e4c9_100%)] p-8 shadow-[0_18px_55px_rgba(79,52,33,0.08)]">
-          <div className="max-w-3xl">
-            <h2 className="font-serif text-3xl font-light text-[#2f2219] sm:text-4xl">{texts.welcomeTitle}</h2>
-            <p className="mt-4 text-base leading-8 text-[#634b3a]">{texts.welcomeText}</p>
-          </div>
-        </section>
+        {/* welcome card removed per redesign requirements */}
 
         <section className="mt-10">
           <div className="mb-6 text-center">
@@ -263,7 +279,7 @@ export default function Home() {
 
           <div className="grid gap-4 lg:grid-cols-2">
             {filteredCategories.map((category) => (
-              <Link key={category.id} href={`/${category.id.toLowerCase().replace(/\s+/g, '-')}`} className="group overflow-hidden rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
+              <Link key={category.id} href={getRouteForCategory(category)} className="group overflow-hidden rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-transform duration-300 hover:-translate-y-1">
                 <div className="relative h-64 w-full overflow-hidden">
                   <Image src={category.coverImage || '/placeholder-food.jpg'} alt={category.name[currentLang] || category.name.en || ''} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="100vw" />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.2),rgba(47,34,25,0.72))]" />
