@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles, MapPin, Clock, Phone } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight, Sparkles, MapPin, Clock, Phone } from 'lucide-react';
 
 import { Category, Product, Restaurant, Branch } from '@/types/menu';
 import Navbar from '@/components/Navbar';
@@ -108,45 +109,65 @@ export default function Home() {
 
   const uiTexts = {
     ar: {
-      featuredTitle: 'الأطباق المتميزة',
-      featuredSub: 'توصية الشيف الخاصة المحضرة بعناية',
+      featuredTitle: 'الأطباق المميزة',
+      featuredSub: 'أبرز ما يقدمه Arab Cafe اليوم',
+      welcomeTitle: 'مرحباً بكم في Arab Cafe',
+      welcomeText: 'استمتع بأطباق عربية أصيلة ومشروبات يدوية في أجواء دافئة وفاخرة.',
+      categoriesTitle: 'استكشف الأقسام',
+      categoriesSub: 'اختر القسم الذي تفضله وابدأ رحلتك بين الأطباق',
       noResults: 'لم يتم العثور على أطباق تطابق بحثك.',
       workingHours: 'أوقات العمل',
       address: 'العنوان',
       branches: 'فروعنا',
       menuTitle: 'قائمة الطعام',
-      currency: 'ل.ت'
+      currency: 'ل.ت',
+      featuredBadge: 'مميز',
+      discover: 'اكتشف في القائمة'
     },
     tr: {
       featuredTitle: 'Öne Çıkan Lezzetler',
-      featuredSub: 'Şefin özenle hazırladığı imza tabaklar',
+      featuredSub: 'Arab Cafe’nin bugün en çok tercih edilenleri',
+      welcomeTitle: 'Arab Cafe’ye Hoş Geldiniz',
+      welcomeText: 'Sıcak ve şık bir ortamda otantik Arap yemekleri ile el yapımı içeceklerin tadını çıkarın.',
+      categoriesTitle: 'Kategorileri Keşfedin',
+      categoriesSub: 'Tercih ettiğiniz bölümü seçin ve menü yolculuğuna başlayın',
       noResults: 'Aramanızla eşleşen ürün bulunamadı.',
       workingHours: 'Çalışma Saatleri',
       address: 'Adres',
       branches: 'Şubelerimiz',
       menuTitle: 'Yemek Menüsü',
-      currency: 'TL'
+      currency: 'TL',
+      featuredBadge: 'Öne Çıkan',
+      discover: 'Menüde Gör'
     },
     en: {
-      featuredTitle: 'Featured Masterpieces',
-      featuredSub: "Chef's special recommendations prepared with care",
+      featuredTitle: 'Featured Dishes',
+      featuredSub: 'The finest highlights of Arab Cafe today',
+      welcomeTitle: 'Welcome to Arab Cafe',
+      welcomeText: 'Enjoy authentic Arabic dishes and handcrafted drinks in a warm and elegant atmosphere.',
+      categoriesTitle: 'Explore the Menu',
+      categoriesSub: 'Choose a section and dive into our curated selection',
       noResults: 'No products matched your search query.',
       workingHours: 'Working Hours',
       address: 'Address',
       branches: 'Branches',
       menuTitle: 'Culinary Menu',
-      currency: 'TL'
+      currency: 'TL',
+      featuredBadge: 'Featured',
+      discover: 'View in menu'
     }
   };
 
-  const featuredProducts: Product[] = [];
+  const featuredProducts: Array<{ product: Product; categoryId: string }> = [];
   categories.forEach((cat) => {
     cat.products.forEach((prod) => {
-      if (prod.featured) {
-        featuredProducts.push(prod);
+      if (prod.featured || prod.bestSeller) {
+        featuredProducts.push({ product: prod, categoryId: cat.id });
       }
     });
   });
+
+  const featuredHighlights = featuredProducts.slice(0, 3);
 
   const getFilteredCategories = () => {
     if (!searchQuery.trim()) return categories;
@@ -171,22 +192,44 @@ export default function Home() {
 
   const filteredCategories = getFilteredCategories();
 
+  const getLocalizedText = (value: { ar: string; tr: string; en: string } | undefined, fallback = '') => {
+    if (!value) return fallback;
+    const locale = currentLang as keyof typeof value;
+    return value[locale] || value.en || fallback;
+  };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 120;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
+
+  const scrollToProduct = (categoryId: string, productId: string) => {
+    const target = document.getElementById(`menu-${categoryId}-${productId}`);
+    if (target) {
+      const offset = 120;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = target.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
+
   const handleExploreClick = () => {
     if (categories.length > 0) {
-      const firstCatElement = document.getElementById(categories[0].id);
-      if (firstCatElement) {
-        const offset = 100;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = firstCatElement.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
+      scrollToSection(categories[0].id);
     }
   };
 
   return (
-    <div className="flex min-h-screen select-none flex-col bg-[#f7efe2] font-sans text-[#2f2219]">
+    <div className="flex min-h-screen select-none flex-col bg-[#f7efe2] font-sans text-[#2f2219]" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
       <SchemaOrg restaurant={restaurant} siteUrl={siteUrl} />
 
       <Navbar
@@ -201,87 +244,133 @@ export default function Home() {
         onSearchChange={setSearchQuery}
       />
 
-      <HeroSection restaurant={restaurant} lang={currentLang} onExploreClick={handleExploreClick} />
+      <HeroSection restaurant={restaurant} lang={currentLang} featuredProducts={featuredHighlights} onScrollToProduct={scrollToProduct} />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-12 sm:px-6 lg:px-8">
-        <div className="sticky top-[84px] z-30 mb-12 flex items-center justify-start gap-2 overflow-x-auto rounded-full border border-[#c79c4f]/20 bg-[#fcf8f1]/85 px-3 py-3 shadow-[0_18px_40px_rgba(79,52,33,0.08)] backdrop-blur-md sm:justify-center sm:gap-4">
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`whitespace-nowrap rounded-full border px-5 py-2 text-xs uppercase tracking-[0.22em] transition-all ${
-              activeSection === 'home'
-                ? 'border-[#c79c4f] bg-[#2f2219] text-[#fcf8f1] shadow-sm'
-                : 'border-[#c79c4f]/15 bg-[#fff9ee] text-[#7a5941] hover:border-[#c79c4f]/30 hover:text-[#2f2219]'
-            }`}
-          >
-            {currentLang === 'ar' ? 'الرئيسية' : currentLang === 'tr' ? 'Ana Sayfa' : 'Home'}
-          </button>
-
-          {categories.map((cat) => {
-            const isSelected = activeSection === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  const el = document.getElementById(cat.id);
-                  if (el) {
-                    const offset = 140;
-                    const y = el.getBoundingClientRect().top + window.scrollY - offset;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                  }
-                }}
-                className={`whitespace-nowrap rounded-full border px-5 py-2 text-xs uppercase tracking-[0.22em] transition-all ${
-                  isSelected
-                    ? 'border-[#c79c4f] bg-[#2f2219] text-[#fcf8f1] shadow-sm'
-                    : 'border-[#c79c4f]/15 bg-[#fff9ee] text-[#7a5941] hover:border-[#c79c4f]/30 hover:text-[#2f2219]'
-                }`}
-              >
-                {cat.name[currentLang]}
-              </button>
-            );
-          })}
-        </div>
-
-        {featuredProducts.length > 0 && !searchQuery && (
-          <section id="_featured" className="mb-20">
-            <div className="mb-10 text-center">
-              <div className="mb-3 inline-flex items-center justify-center gap-2 rounded-full border border-[#c79c4f]/20 bg-[#fcf8f1]/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#8b632c]">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        {featuredHighlights.length > 0 && !searchQuery && (
+          <section id="_featured" className="mb-16">
+            <div className="mb-8 flex flex-col gap-2 text-center sm:mb-10">
+              <div className="mb-3 inline-flex items-center justify-center gap-2 self-center rounded-full border border-[#c79c4f]/20 bg-[#fcf8f1]/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#8b632c]">
                 <Sparkles className="h-4 w-4" />
                 <span>{uiTexts[currentLang].featuredTitle}</span>
               </div>
-              <h2 className="font-serif text-2xl font-light tracking-wide text-[#2f2219] sm:text-4xl">
+              <h2 className="font-serif text-2xl font-light tracking-wide text-[#2f2219] sm:text-3xl lg:text-4xl">
                 {uiTexts[currentLang].featuredSub}
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
-              {featuredProducts.slice(0, 3).map((prod) => (
-                <ProductCard key={`featured-${prod.id}`} product={prod} lang={currentLang} onSelect={setSelectedProduct} />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {featuredHighlights.map(({ product, categoryId }) => (
+                <button
+                  key={`${categoryId}-${product.id}`}
+                  onClick={() => scrollToProduct(categoryId, product.id)}
+                  className="group overflow-hidden rounded-[32px] border border-[#c79c4f]/20 bg-[#fcf8f1] text-left shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(79,52,33,0.14)]"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={product.media[0]?.type === 'image' ? product.media[0].url : '/placeholder-food.jpg'}
+                      alt={getLocalizedText(product.name, 'Featured dish')}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-600 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(47,34,25,0.02),rgba(47,34,25,0.35))]" />
+                    <div className="absolute left-4 top-4 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#fcf8f1] backdrop-blur-sm">
+                      {uiTexts[currentLang].featuredBadge}
+                    </div>
+                  </div>
+
+                  <div className="p-5 sm:p-6">
+                    <h3 className="font-serif text-xl font-semibold text-[#2f2219]">{getLocalizedText(product.name)}</h3>
+                    <p className="mt-3 text-sm leading-7 text-[#7a5941]">
+                      {getLocalizedText(product.description, 'A signature selection prepared with care.')}
+                    </p>
+                    <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-[#8b632c]">
+                      <span>{uiTexts[currentLang].discover}</span>
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </button>
               ))}
             </div>
           </section>
         )}
 
-        <div className="space-y-20">
+        <section className="mb-16 rounded-[36px] border border-[#c79c4f]/15 bg-[linear-gradient(135deg,#fcf8f1_0%,#f4e4c9_100%)] p-7 shadow-[0_18px_55px_rgba(79,52,33,0.08)] sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8b632c]">
+                {currentLang === 'ar' ? 'أهلاً وسهلاً' : currentLang === 'tr' ? 'Karşılama' : 'Welcome'}
+              </p>
+              <h2 className="mt-3 font-serif text-2xl font-light text-[#2f2219] sm:text-3xl lg:text-4xl">
+                {uiTexts[currentLang].welcomeTitle}
+              </h2>
+              <p className="mt-4 text-base leading-8 text-[#634b3a]">
+                {uiTexts[currentLang].welcomeText}
+              </p>
+            </div>
+            <div className="rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] px-4 py-2 text-sm font-semibold text-[#8b632c] shadow-sm">
+              {currentLang === 'ar' ? 'تجربة عربية فاخرة' : currentLang === 'tr' ? 'Şık bir Arap deneyimi' : 'Premium café experience'}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <div className="mb-7 text-center sm:mb-8">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8b632c]">{uiTexts[currentLang].categoriesTitle}</p>
+            <h2 className="mt-3 font-serif text-2xl font-light text-[#2f2219] sm:text-3xl">
+              {uiTexts[currentLang].categoriesSub}
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {filteredCategories.map((cat) => {
+              const coverImage = cat.coverImage || '/placeholder-food.jpg';
+              const sectionTitle = cat.name[currentLang];
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => scrollToSection(cat.id)}
+                  className="group flex w-full flex-col overflow-hidden rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1] text-left shadow-[0_18px_45px_rgba(79,52,33,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c79c4f]/30 hover:shadow-[0_24px_60px_rgba(79,52,33,0.12)] md:flex-row md:items-center"
+                >
+                  <div className="relative h-40 w-full overflow-hidden md:h-32 md:w-48">
+                    <Image src={coverImage} alt={sectionTitle} fill sizes="(max-width: 768px) 100vw, 240px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(47,34,25,0.35),rgba(47,34,25,0.1))]" />
+                  </div>
+                  <div className="flex flex-1 items-center justify-between gap-4 p-5 sm:p-6">
+                    <div>
+                      <h3 className="font-serif text-xl text-[#2f2219]">{sectionTitle}</h3>
+                      <p className="mt-2 text-sm leading-7 text-[#7a5941]">
+                        {cat.products.length} {uiTexts[currentLang].menuTitle}
+                      </p>
+                    </div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c79c4f]/20 bg-[#fff9ee] text-[#8b632c] transition-transform duration-300 group-hover:translate-x-1">
+                      <ArrowRight className="h-5 w-5" />
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <div className="space-y-16">
           {filteredCategories.length > 0 ? (
             filteredCategories.map((cat) => (
-              <section key={cat.id} id={cat.id} className="scroll-mt-36">
-                <div className="relative mb-8 flex h-[180px] items-center justify-center overflow-hidden rounded-[32px] border border-[#c79c4f]/15 shadow-[0_18px_45px_rgba(79,52,33,0.08)] sm:h-[220px]">
-                  <div className="absolute inset-0 scale-105 bg-cover bg-center bg-no-repeat opacity-45 transition-all duration-700" style={{ backgroundImage: `url('${cat.coverImage || '/placeholder-food.jpg'}')` }} />
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(252,248,241,0.1),rgba(47,34,25,0.7))]" />
-
-                  <div className="relative z-10 px-4 text-center">
-                    <h2 className="font-serif text-3xl font-light tracking-wide text-[#fcf8f1] shadow-text sm:text-4xl md:text-5xl">
-                      {cat.name[currentLang]}
-                    </h2>
-                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-[#f5e7c4] sm:text-xs">
-                      {cat.products.length} {uiTexts[currentLang].menuTitle}
-                    </p>
+              <section key={cat.id} id={cat.id} className="scroll-mt-28 rounded-[34px] border border-[#c79c4f]/15 bg-[#fcf8f1]/85 p-5 shadow-[0_18px_45px_rgba(79,52,33,0.06)] sm:p-7 lg:p-8">
+                <div className="mb-8 flex flex-col gap-4 border-b border-[#c79c4f]/15 pb-6 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8b632c]">{uiTexts[currentLang].featuredBadge}</p>
+                    <h2 className="mt-2 font-serif text-2xl font-light text-[#2f2219] sm:text-3xl">{cat.name[currentLang]}</h2>
                   </div>
+                  <p className="text-sm text-[#7a5941]">
+                    {cat.products.length} {uiTexts[currentLang].menuTitle}
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {cat.products.map((prod) => (
-                    <ProductCard key={prod.id} product={prod} lang={currentLang} onSelect={setSelectedProduct} />
+                    <ProductCard key={prod.id} product={prod} lang={currentLang} onSelect={setSelectedProduct} anchorId={`menu-${cat.id}-${prod.id}`} />
                   ))}
                 </div>
               </section>

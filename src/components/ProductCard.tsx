@@ -11,9 +11,10 @@ interface ProductCardProps {
   product: Product;
   lang: Language;
   onSelect: (product: Product) => void;
+  anchorId?: string;
 }
 
-export default function ProductCard({ product, lang, onSelect }: ProductCardProps) {
+export default function ProductCard({ product, lang, onSelect, anchorId }: ProductCardProps) {
   const isRtl = lang === 'ar';
 
   const labels = {
@@ -37,6 +38,7 @@ export default function ProductCard({ product, lang, onSelect }: ProductCardProp
 
   return (
     <motion.div
+      id={anchorId}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
