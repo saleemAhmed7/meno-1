@@ -151,23 +151,26 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
         onSearchChange={setSearchQuery}
       />
 
-      {/* Category tabs - sticky on mobile, text-only pills */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="sticky top-20 z-40 -mx-4 px-4 sm:mx-0 sm:px-0">
-          <div className="overflow-x-auto py-3">
-            <div className="flex gap-3 min-w-max">
-              {categorySlugs.map((s) => {
-                const active = slug === s.slug;
-                return (
-                  <button
-                    key={s.slug}
-                    onClick={() => router.push(s.route)}
-                    className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-md' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
-                  >
-                    {getCatLabel(s)}
-                  </button>
-                );
-              })}
+      {/* Category tabs - sticky below header, glass background, RTL-aware */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+        <div className="sticky top-16 sm:top-20 z-50 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3">
+            <div className="overflow-x-auto scroll-smooth px-2">
+              <div className="flex gap-3 min-w-max">
+                {categorySlugs.map((s) => {
+                  const active = slug === s.slug;
+                  return (
+                    <button
+                      key={s.slug}
+                      onClick={() => router.push(s.route)}
+                      aria-current={active ? 'true' : 'false'}
+                      className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-lg' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
+                    >
+                      {getCatLabel(s)}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
