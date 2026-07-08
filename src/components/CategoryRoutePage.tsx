@@ -164,30 +164,7 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
         onSearchChange={setSearchQuery}
       />
 
-      {/* Category tabs - sticky below header, glass background, RTL-aware */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-        <div className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ top: `${headerHeight}px` }}>
-          <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3">
-            <div className="overflow-x-auto scroll-smooth px-2">
-              <div className="flex gap-3 min-w-max">
-                {categorySlugs.map((s) => {
-                  const active = slug === s.slug;
-                  return (
-                    <button
-                      key={s.slug}
-                      onClick={() => router.push(s.route)}
-                      aria-current={active ? 'true' : 'false'}
-                      className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-lg' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
-                    >
-                      {getCatLabel(s)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* (tabs will be rendered below the banner to become sticky after banner scrolls away) */}
 
       <main className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-16 pt-24 sm:px-6 lg:px-8 lg:pt-28">
         <section className="overflow-hidden rounded-[36px] border border-[#c79c4f]/15 bg-[#fcf8f1] shadow-[0_24px_70px_rgba(79,52,33,0.12)]">
@@ -216,7 +193,32 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
           </div>
         </section>
 
-        <section className="mt-10 rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1]/80 p-5 shadow-[0_18px_45px_rgba(79,52,33,0.06)] sm:p-7 lg:p-8">
+      {/* Category tabs: placed directly below banner. They become sticky under the header when scrolled. */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+        <div className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ top: `${headerHeight}px` }}>
+          <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3">
+            <div className="overflow-x-auto scroll-smooth px-2">
+              <div className="flex gap-3 min-w-max">
+                {categorySlugs.map((s) => {
+                  const active = slug === s.slug;
+                  return (
+                    <button
+                      key={s.slug}
+                      onClick={() => router.push(s.route)}
+                      aria-current={active ? 'true' : 'false'}
+                      className={`flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${active ? 'bg-[#c79c4f] text-white shadow-lg' : 'bg-[#fff9ee] text-[#2f2219] border border-[#e9d8b4]'}`}
+                    >
+                      {getCatLabel(s)}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="mt-10 rounded-[32px] border border-[#c79c4f]/15 bg-[#fcf8f1]/80 p-5 shadow-[0_18px_45px_rgba(79,52,33,0.06)] sm:p-7 lg:p-8">
           <div className="mb-6 flex flex-col gap-2 border-b border-[#c79c4f]/15 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8b632c]">{uiTexts[currentLang].featured}</p>
