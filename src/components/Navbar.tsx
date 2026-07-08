@@ -36,7 +36,7 @@ export default function Navbar({ currentLang, onLanguageChange, restaurant, sear
   };
 
   return (
-    <nav
+    <nav id="app-navbar"
       className={`fixed left-1/2 top-3 z-40 w-[calc(100%-1rem)] max-w-7xl -translate-x-1/2 rounded-full border border-[#c79c4f]/15 px-3 py-2 transition-all duration-300 sm:px-4 ${
         isScrolled ? 'bg-[#fcf8f1]/90 shadow-[0_18px_45px_rgba(79,52,33,0.12)] backdrop-blur-xl' : 'bg-[#fcf8f1]/75 shadow-[0_10px_32px_rgba(79,52,33,0.08)] backdrop-blur-xl'
       }`}

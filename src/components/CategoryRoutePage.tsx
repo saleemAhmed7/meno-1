@@ -99,6 +99,19 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
   const isRtl = currentLang === 'ar';
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://arab-cafe-uzungol.com';
 
+  const [headerHeight, setHeaderHeight] = useState<number>(72);
+
+  useEffect(() => {
+    const compute = () => {
+      const nav = document.getElementById('app-navbar');
+      const h = nav ? nav.offsetHeight : 72;
+      setHeaderHeight(h);
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, []);
+
   // Helper to get localized category label
   const getCatLabel = (s: { labels: { ar: string; tr: string; en: string } }) => s.labels[currentLang] || s.labels.en;
 
@@ -153,7 +166,7 @@ export default function CategoryRoutePage({ slug, fallbackTitle }: CategoryRoute
 
       {/* Category tabs - sticky below header, glass background, RTL-aware */}
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-        <div className="sticky top-16 sm:top-20 z-50 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ top: `${headerHeight}px` }}>
           <div className="backdrop-blur-md bg-white/70 border border-white/30 shadow-md py-3">
             <div className="overflow-x-auto scroll-smooth px-2">
               <div className="flex gap-3 min-w-max">
